@@ -177,12 +177,14 @@ INSERT INTO ai_intent (intent_code, intent_name, intent_category, target_role, k
 ('BENEFIT_CONSULT', '权益咨询', 'BENEFIT', 'MANAGER', '权益,体检,绿通,问诊,服务,优惠', 10),
 ('URGENT_MEDICAL', '紧急医疗', 'HEALTH', 'DOCTOR', '紧急,急救,严重,危险,马上,立刻', 20),
 ('COMPLAINT', '投诉建议', 'GENERAL', 'MANAGER', '投诉,不满,建议,反馈,问题', 15),
-('GENERAL_CHAT', '通用对话', 'GENERAL', 'AI', '你好,您好,谢谢,再见,在吗', 5);
+('GENERAL_CHAT', '通用对话', 'GENERAL', 'AI', '你好,您好,谢谢,再见,在吗', 5)
+ON CONFLICT (intent_code) DO NOTHING;
 
 -- 初始化测试用户
 INSERT INTO user_info (wechat_id, name, gender, age, phone, status) VALUES
 ('test123', '测试用户', 1, 30, '13800138000', 1),
-('wmABC123', '张三', 1, 35, '13900139000', 1);
+('wmABC123', '张三', 1, 35, '13900139000', 1)
+ON CONFLICT (wechat_id) DO NOTHING;
 
 
 -- ==========================================
@@ -212,10 +214,10 @@ CREATE TABLE IF NOT EXISTS sys_user (
     deleted SMALLINT DEFAULT 0
 );
 
-CREATE INDEX idx_sys_user_username ON sys_user(username);
-CREATE INDEX idx_sys_user_phone ON sys_user(phone);
-CREATE INDEX idx_sys_user_dept_id ON sys_user(dept_id);
-CREATE INDEX idx_sys_user_status ON sys_user(status);
+CREATE INDEX IF NOT EXISTS idx_sys_user_username ON sys_user(username);
+CREATE INDEX IF NOT EXISTS idx_sys_user_phone ON sys_user(phone);
+CREATE INDEX IF NOT EXISTS idx_sys_user_dept_id ON sys_user(dept_id);
+CREATE INDEX IF NOT EXISTS idx_sys_user_status ON sys_user(status);
 
 -- 角色表
 CREATE TABLE IF NOT EXISTS sys_role (
@@ -234,8 +236,8 @@ CREATE TABLE IF NOT EXISTS sys_role (
     deleted SMALLINT DEFAULT 0
 );
 
-CREATE INDEX idx_sys_role_role_code ON sys_role(role_code);
-CREATE INDEX idx_sys_role_status ON sys_role(status);
+CREATE INDEX IF NOT EXISTS idx_sys_role_role_code ON sys_role(role_code);
+CREATE INDEX IF NOT EXISTS idx_sys_role_status ON sys_role(status);
 
 -- 用户角色关联表
 CREATE TABLE IF NOT EXISTS sys_user_role (
@@ -246,8 +248,8 @@ CREATE TABLE IF NOT EXISTS sys_user_role (
     UNIQUE (user_id, role_id)
 );
 
-CREATE INDEX idx_sys_user_role_user_id ON sys_user_role(user_id);
-CREATE INDEX idx_sys_user_role_role_id ON sys_user_role(role_id);
+CREATE INDEX IF NOT EXISTS idx_sys_user_role_user_id ON sys_user_role(user_id);
+CREATE INDEX IF NOT EXISTS idx_sys_user_role_role_id ON sys_user_role(role_id);
 
 -- 权限表
 CREATE TABLE IF NOT EXISTS sys_permission (
@@ -265,9 +267,9 @@ CREATE TABLE IF NOT EXISTS sys_permission (
     update_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX idx_sys_permission_parent_id ON sys_permission(parent_id);
-CREATE INDEX idx_sys_permission_type ON sys_permission(permission_type);
-CREATE INDEX idx_sys_permission_status ON sys_permission(status);
+CREATE INDEX IF NOT EXISTS idx_sys_permission_parent_id ON sys_permission(parent_id);
+CREATE INDEX IF NOT EXISTS idx_sys_permission_type ON sys_permission(permission_type);
+CREATE INDEX IF NOT EXISTS idx_sys_permission_status ON sys_permission(status);
 
 -- 角色权限关联表
 CREATE TABLE IF NOT EXISTS sys_role_permission (
@@ -278,8 +280,8 @@ CREATE TABLE IF NOT EXISTS sys_role_permission (
     UNIQUE (role_id, permission_id)
 );
 
-CREATE INDEX idx_sys_role_permission_role_id ON sys_role_permission(role_id);
-CREATE INDEX idx_sys_role_permission_permission_id ON sys_role_permission(permission_id);
+CREATE INDEX IF NOT EXISTS idx_sys_role_permission_role_id ON sys_role_permission(role_id);
+CREATE INDEX IF NOT EXISTS idx_sys_role_permission_permission_id ON sys_role_permission(permission_id);
 
 -- 部门表
 CREATE TABLE IF NOT EXISTS sys_dept (
@@ -299,8 +301,8 @@ CREATE TABLE IF NOT EXISTS sys_dept (
     deleted SMALLINT DEFAULT 0
 );
 
-CREATE INDEX idx_sys_dept_parent_id ON sys_dept(parent_id);
-CREATE INDEX idx_sys_dept_status ON sys_dept(status);
+CREATE INDEX IF NOT EXISTS idx_sys_dept_parent_id ON sys_dept(parent_id);
+CREATE INDEX IF NOT EXISTS idx_sys_dept_status ON sys_dept(status);
 
 -- 操作日志表
 CREATE TABLE IF NOT EXISTS sys_operation_log (
@@ -322,9 +324,9 @@ CREATE TABLE IF NOT EXISTS sys_operation_log (
     create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX idx_sys_operation_log_user_id ON sys_operation_log(user_id);
-CREATE INDEX idx_sys_operation_log_module ON sys_operation_log(module);
-CREATE INDEX idx_sys_operation_log_create_time ON sys_operation_log(create_time);
+CREATE INDEX IF NOT EXISTS idx_sys_operation_log_user_id ON sys_operation_log(user_id);
+CREATE INDEX IF NOT EXISTS idx_sys_operation_log_module ON sys_operation_log(module);
+CREATE INDEX IF NOT EXISTS idx_sys_operation_log_create_time ON sys_operation_log(create_time);
 
 -- 初始化数据
 
@@ -335,19 +337,29 @@ INSERT INTO sys_role (role_code, role_name, role_type, data_scope, description, 
 ('ROLE_DOCTOR', '家庭医生', 1, 3, '提供医疗咨询和健康管理服务', 1),
 ('ROLE_HEALTH_MANAGER', '健康管家', 1, 3, 'AI协同服务，处理日常咨询', 1),
 ('ROLE_BENEFIT_ADVISOR', '权益顾问', 1, 1, '管理健康权益和活动', 1),
-('ROLE_INSURANCE_ADVISOR', '保险顾问', 1, 3, '提供保险咨询和销售服务', 1);
+('ROLE_INSURANCE_ADVISOR', '保险顾问', 1, 3, '提供保险咨询和销售服务', 1)
+ON CONFLICT (role_code) DO NOTHING;
 
 -- 插入默认部门
-INSERT INTO sys_dept (parent_id, dept_name, dept_code, sort_order, status) VALUES
-(0, '总部', 'HQ', 0, 1),
-(1, '运营部', 'OP', 1, 1),
-(1, '医疗服务部', 'MED', 2, 1),
-(1, '保险服务部', 'INS', 3, 1);
+INSERT INTO sys_dept (parent_id, dept_name, dept_code, sort_order, status)
+SELECT 0, '总部', 'HQ', 0, 1
+WHERE NOT EXISTS (SELECT 1 FROM sys_dept WHERE dept_code = 'HQ');
+INSERT INTO sys_dept (parent_id, dept_name, dept_code, sort_order, status)
+SELECT 1, '运营部', 'OP', 1, 1
+WHERE NOT EXISTS (SELECT 1 FROM sys_dept WHERE dept_code = 'OP');
+INSERT INTO sys_dept (parent_id, dept_name, dept_code, sort_order, status)
+SELECT 1, '医疗服务部', 'MED', 2, 1
+WHERE NOT EXISTS (SELECT 1 FROM sys_dept WHERE dept_code = 'MED');
+INSERT INTO sys_dept (parent_id, dept_name, dept_code, sort_order, status)
+SELECT 1, '保险服务部', 'INS', 3, 1
+WHERE NOT EXISTS (SELECT 1 FROM sys_dept WHERE dept_code = 'INS');
 
 -- 插入默认用户（密码: admin123）
 INSERT INTO sys_user (username, password, real_name, phone, email, dept_id, status, create_by) VALUES
-('admin', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iAt6Z5EO', '系统管理员', '13800138000', 'admin@healthcare.com', 1, 1, 1);
+('admin', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iAt6Z5EO', '系统管理员', '13800138000', 'admin@healthcare.com', 1, 1, 1)
+ON CONFLICT (username) DO NOTHING;
 
 -- 关联用户角色
 INSERT INTO sys_user_role (user_id, role_id) 
-SELECT 1, role_id FROM sys_role WHERE role_code = 'ROLE_SUPER_ADMIN';
+SELECT 1, role_id FROM sys_role WHERE role_code = 'ROLE_SUPER_ADMIN'
+ON CONFLICT (user_id, role_id) DO NOTHING;
