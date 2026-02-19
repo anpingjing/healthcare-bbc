@@ -1,0 +1,53 @@
+# Render 部署配置
+# 使用方法：在 Render Dashboard 中导入此 Blueprint
+
+services:
+  # Web Service - 前端 + 后端
+  - type: web
+    name: healthcare-bbc
+    env: docker
+    region: oregon
+    plan: starter
+    branch: main
+    rootDir: .
+    dockerfilePath: ./deploy/Dockerfile.railway
+    healthCheckPath: /health
+    envVars:
+      - key: PORT
+        value: 8080
+      - key: NODE_ENV
+        value: production
+      - key: JAVA_VERSION
+        value: 17
+      # 数据库配置
+      - key: DATABASE_URL
+        fromDatabase:
+          name: healthcare-db
+          property: connectionString
+      - key: MYSQL_USER
+        fromDatabase:
+          name: healthcare-db
+          property: username
+      - key: MYSQL_PASSWORD
+        fromDatabase:
+          name: healthcare-db
+          property: password
+      # JWT 配置
+      - key: JWT_SECRET
+        generateValue: true
+      # 企业微信配置（需要手动填写）
+      - key: WECHAT_CORP_ID
+        sync: false
+      - key: WECHAT_CORP_SECRET
+        sync: false
+      - key: WECHAT_AGENT_ID
+        value: "1000007"
+      - key: WECHAT_TOKEN
+        sync: false
+      - key: WECHAT_ENCODING_AES_KEY
+        sync: false
+
+databases:
+  - name: healthcare-db
+    databaseName: healthcare_admin
+    plan: starter

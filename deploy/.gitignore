@@ -1,0 +1,22 @@
+# 部署配置文件
+.env
+.env.local
+.env.production
+
+# Docker
+*.log
+docker-compose.override.yml
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# 敏感信息
+*.pem
+*.key
+*.crt

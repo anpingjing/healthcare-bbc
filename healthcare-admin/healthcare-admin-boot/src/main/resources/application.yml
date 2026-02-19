@@ -1,0 +1,78 @@
+server:
+  port: 8081
+  servlet:
+    context-path: /
+
+spring:
+  application:
+    name: healthcare-admin
+  
+  datasource:
+    url: jdbc:mysql://localhost:3306/healthcare_admin?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: root123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 20
+      idle-timeout: 300000
+      max-lifetime: 1200000
+      connection-timeout: 20000
+  
+  redis:
+    host: localhost
+    port: 6379
+    password: 
+    database: 0
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+  
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    serialization:
+      write-dates-as-timestamps: false
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 20MB
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+  mapper-locations: classpath*:/mapper/**/*.xml
+
+jwt:
+  secret: healthcare-admin-secret-key-2026-very-long-key-for-security
+  access-token-expiration: 7200000
+  refresh-token-expiration: 604800000
+
+wechat:
+  work:
+    corp-id: ${WECHAT_CORP_ID:your-corp-id}
+    corp-secret: ${WECHAT_CORP_SECRET:your-corp-secret}
+    agent-id: ${WECHAT_AGENT_ID:1000001}
+    token: ${WECHAT_TOKEN:your-token}
+    encoding-aes-key: ${WECHAT_ENCODING_AES_KEY:your-aes-key}
+
+logging:
+  level:
+    com.healthcare.admin: debug
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn

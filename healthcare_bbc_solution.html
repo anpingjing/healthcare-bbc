@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>企微健康社群方案</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0066CC',
+                        secondary: '#2563EB',
+                        accent: '#0EA5E9',
+                        success: '#10B981',
+                        warning: '#F59E0B',
+                        danger: '#EF4444',
+                        healthcare: '#00A86B',
+                        insurance: '#FF6B35',
+                        tech: '#6366F1'
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.6s ease-in-out',
+                        'slide-up': 'slideUp 0.8s ease-out',
+                        'bounce-in': 'bounceIn 1s ease-out',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .gradient-bg {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            }
+            .healthcare-gradient {
+                background: linear-gradient(135deg, #00A86B 0%, #006644 100%);
+            }
+            .insurance-gradient {
+                background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
+            }
+            .tech-gradient {
+                background: linear-gradient(135deg, #6366F1 0%, #4F46E5 100%);
+            }
+            .card-hover {
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .card-hover:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            }
+            .glass-effect {
+                backdrop-filter: blur(10px);
+                background: rgba(255, 255, 255, 0.1);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+            70% {
+                transform: scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        .scroll-smooth {
+            scroll-behavior: smooth;
+        }
+        
+        .parallax {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        
+        /* 修复红色虚线边框问题 */
+        * {
+            outline: none !important;
+            box-shadow: none !important;
+        }
+        
+        :focus {
+            outline: none !important;
+            box-shadow: none !important;
+        }
+        
+        /* 确保所有元素都没有虚线边框 */
+        div:focus, span:focus, p:focus, h1:focus, h2:focus, h3:focus, h4:focus, h5:focus, h6:focus {
+            outline: none !important;
+            box-shadow: none !important;
+            border: none !important;
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-50 scroll-smooth">
+    <!-- 导航栏 -->
+    <nav class="fixed top-0 w-full z-50 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 healthcare-gradient rounded-lg flex items-center justify-center">
+                        <i class="fa fa-heartbeat text-white text-lg"></i>
+                    </div>
+                    <span class="text-xl font-bold text-gray-900">企微健康社群方案</span>
+                </div>
+                
+                <div class="hidden md:flex space-x-8">
+                    <a href="#overview" class="text-gray-700 hover:text-primary transition-colors duration-300">方案概览</a>
+                    <a href="#roles" class="text-gray-700 hover:text-primary transition-colors duration-300">角色配置</a>
+                    <a href="#role-examples" class="text-gray-700 hover:text-primary transition-colors duration-300">角色触发示例</a>
+                    <a href="#technology" class="text-gray-700 hover:text-primary transition-colors duration-300">技术支撑</a>
+                    <a href="#implementation" class="text-gray-700 hover:text-primary transition-colors duration-300">落地方案</a>
+                    <a href="#compliance" class="text-gray-700 hover:text-primary transition-colors duration-300">合规保障</a>
+                </div>
+                
+                <button class="md:hidden" onclick="toggleMobileMenu()">
+                    <i class="fa fa-bars text-gray-700 text-xl"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- 移动端菜单 -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white shadow-lg">
+            <div class="px-4 py-2 space-y-2">
+                <a href="#overview" class="block py-2 text-gray-700 hover:text-primary">方案概览</a>
+                <a href="#roles" class="block py-2 text-gray-700 hover:text-primary">角色配置</a>
+                <a href="#role-examples" class="block py-2 text-gray-700 hover:text-primary">角色触发示例</a>
+                <a href="#technology" class="block py-2 text-gray-700 hover:text-primary">技术支撑</a>
+                <a href="#implementation" class="block py-2 text-gray-700 hover:text-primary">落地方案</a>
+                <a href="#compliance" class="block py-2 text-gray-700 hover:text-primary">合规保障</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 英雄区域 -->
+    <section class="relative h-screen flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 gradient-bg"></div>
+        <div class="absolute inset-0 bg-black bg-opacity-20"></div>
+        
+        <!-- 背景动画元素 -->
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="absolute top-20 left-10 w-20 h-20 bg-white bg-opacity-10 rounded-full animate-pulse-slow"></div>
+            <div class="absolute top-40 right-20 w-16 h-16 bg-white bg-opacity-15 rounded-full animate-pulse-slow" style="animation-delay: 1s;"></div>
+            <div class="absolute bottom-40 left-20 w-24 h-24 bg-white bg-opacity-10 rounded-full animate-pulse-slow" style="animation-delay: 2s;"></div>
+            <div class="absolute bottom-20 right-10 w-12 h-12 bg-white bg-opacity-15 rounded-full animate-pulse-slow" style="animation-delay: 3s;"></div>
+        </div>
+        
+        <div class="relative z-10 text-center text-white max-w-4xl mx-auto px-4">
+            <h1 class="text-[clamp(2.5rem,6vw,4rem)] font-bold mb-6 animate-bounce-in">
+                企微健康社群方案
+            </h1>
+            <p class="text-[clamp(1.1rem,2.5vw,1.5rem)] mb-8 text-gray-100 animate-slide-up">
+                基于企业微信生态，构建"医生+AI+保险"三位一体的健康管理服务新模式
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up" style="animation-delay: 0.5s;">
+                <button onclick="scrollToSection('overview')" class="bg-white text-primary px-8 py-4 rounded-full font-semibold hover:bg-gray-100 transition-all duration-300 transform hover:scale-105">
+                    <i class="fa fa-eye mr-2"></i>查看方案详情
+                </button>
+                <button onclick="scrollToSection('implementation')" class="border-2 border-white text-white px-8 py-4 rounded-full font-semibold hover:bg-white hover:text-primary transition-all duration-300">
+                    <i class="fa fa-rocket mr-2"></i>落地实施
+                </button>
+            </div>
+        </div>
+        
+        <!-- 滚动提示 -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <i class="fa fa-chevron-down text-white text-2xl"></i>
+        </div>
+    </section>
+
+    <!-- 方案概览 -->
+    <section id="overview" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">方案概览</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    创新的BBC（Business to Business to Customer）健康管理模式，通过企业微信连接保险机构、医疗服务提供者和终端客户
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+                <div class="space-y-6">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 healthcare-gradient rounded-lg flex items-center justify-center flex-shrink-0">
+                            <i class="fa fa-users text-white text-lg"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-900 mb-2">多角色协同服务</h3>
+                            <p class="text-gray-600">家庭医生、健康管家、权益顾问、保险顾问四角色协同，提供全方位健康管理服务</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 tech-gradient rounded-lg flex items-center justify-center flex-shrink-0">
+                            <i class="fa fa-cogs text-white text-lg"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-900 mb-2">AI智能驱动</h3>
+                            <p class="text-gray-600">医疗大模型+知识图谱+多模态交互，实现智能化健康评估和个性化服务推荐</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 insurance-gradient rounded-lg flex items-center justify-center flex-shrink-0">
+                            <i class="fa fa-shield text-white text-lg"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-900 mb-2">保险精准匹配</h3>
+                            <p class="text-gray-600">基于健康数据和AI分析，为客户推荐最适合的保险产品和健康权益</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="relative">
+                    <div class="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-2xl p-8 card-hover">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-6 text-center">BBC模式架构</h3>
+                        <div class="space-y-4">
+                            <!-- B端1：保险机构 -->
+                            <div class="bg-white rounded-lg p-4 shadow-md">
+                                <div class="flex items-center space-x-3 mb-2">
+                                    <div class="w-8 h-8 insurance-gradient rounded-lg flex items-center justify-center">
+                                        <i class="fa fa-building text-white text-sm"></i>
+                                    </div>
+                                    <span class="font-semibold text-gray-900">保险机构</span>
+                                </div>
+                                <p class="text-sm text-gray-600">用户获取、保费收入、风险控制</p>
+                            </div>
+                            
+                            <!-- 中间层：健康管理平台 -->
+                            <div class="bg-white rounded-lg p-4 shadow-md">
+                                <div class="flex items-center space-x-3 mb-2">
+                                    <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                                        <i class="fa fa-cogs text-white text-sm"></i>
+                                    </div>
+                                    <span class="font-semibold text-gray-900">健康管理平台</span>
+                                </div>
+                                <p class="text-sm text-gray-600">AI智能调度、数据整合分析、服务协同</p>
+                            </div>
+                            
+                            <!-- B端2：医疗服务 -->
+                            <div class="bg-white rounded-lg p-4 shadow-md">
+                                <div class="flex items-center space-x-3 mb-2">
+                                    <div class="w-8 h-8 healthcare-gradient rounded-lg flex items-center justify-center">
+                                        <i class="fa fa-heartbeat text-white text-sm"></i>
+                                    </div>
+                                    <span class="font-semibold text-gray-900">医疗服务</span>
+                                </div>
+                                <p class="text-sm text-gray-600">专业问诊、健康指导、慢病管理</p>
+                            </div>
+                            
+                            <!-- C端：客户 -->
+                            <div class="bg-gradient-to-r from-yellow-400 to-orange-400 rounded-lg p-4 text-white">
+                                <div class="flex items-center space-x-3 mb-2">
+                                    <div class="w-8 h-8 bg-white bg-opacity-20 rounded-lg flex items-center justify-center">
+                                        <i class="fa fa-user text-white text-sm"></i>
+                                    </div>
+                                    <span class="font-semibold">终端客户</span>
+                                </div>
+                                <p class="text-sm opacity-90">个性化健康服务、保险保障、健康管理</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 核心价值 -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="text-center p-8 bg-gradient-to-br from-green-50 to-emerald-100 rounded-2xl card-hover">
+                    <div class="w-16 h-16 healthcare-gradient rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fa fa-clock-o text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">7×24小时服务</h3>
+                    <p class="text-gray-600">AI健康助手全天候在线，专业医生定期服务，随时响应健康需求</p>
+                </div>
+                
+                <div class="text-center p-8 bg-gradient-to-br from-blue-50 to-indigo-100 rounded-2xl card-hover">
+                    <div class="w-16 h-16 tech-gradient rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fa fa-bullseye text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">个性化定制</h3>
+                    <p class="text-gray-600">基于健康数据和AI分析，为每个客户定制专属的健康管理方案</p>
+                </div>
+                
+                <div class="text-center p-8 bg-gradient-to-br from-orange-50 to-red-100 rounded-2xl card-hover">
+                    <div class="w-16 h-16 insurance-gradient rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fa fa-dollar text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">价值最大化</h3>
+                    <p class="text-gray-600">保险产品精准匹配，健康服务增值，实现客户价值最大化</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 角色配置 -->
+    <section id="roles" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">智能角色配置</h2>
+                <p class="text-xl text-gray-600">四角色协同，构建全方位健康管理服务体系</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- 家庭医生 -->
+                <div class="bg-white rounded-2xl p-6 shadow-lg card-hover border-t-4 border-healthcare">
+                    <div class="text-center mb-6">
+                        <div class="w-20 h-20 healthcare-gradient rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fa fa-user-md text-white text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900">家庭医生</h3>
+                        <p class="text-sm text-gray-500">专业医疗核心</p>
+                    </div>
+                    <ul class="space-y-3 text-sm text-gray-600">
+                        <li class="flex items-center">
+                            <i class="fa fa-check-circle text-healthcare mr-2"></i>
+                            持执业资质，专业问诊
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa fa-check-circle text-healthcare mr-2"></i>
+                            健康指导与疾病诊断
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa fa-check-circle text-healthcare mr-2"></i>
+                            制定治疗方案
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa fa-check-circle text-healthcare mr-2"></i>
+                            定期随访管理
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- 健康管家 -->
+                <div class="bg-white rounded-2xl p-6 shadow-lg card-hover border-t-4 border-tech">
+                    <div class="text-center mb-6">
+                        <div class="w-20 h-20 tech-gradient rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fa fa-robot text-white text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900">健康管家</h3>
+                        <p class="text-sm text-gray-500">AI智能助手</p>
+                    </div>
+                    <ul class="space-y-3 text-sm text-gray-600">
+                        <li class="flex items-center">
+                            <i class="fa fa-check-circle text-tech mr-2"></i>
+                            AI辅助执行健康计划
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa fa-check-circle text-tech mr-2"></i>
+                            跨角色服务衔接
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa fa-check-circle text-tech mr-2"></i>
+                            健康数据监测分析
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa fa-check-circle text-tech mr-2"></i>
+                            智能提醒与干预
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- 权益顾问 -->
+                <div class="bg-white rounded-2xl p-6 shadow-lg card-hover border-t-4 border-warning">
+                    <div class="text-center mb-6">
+                        <div class="w-20 h-20 bg-gradient-to-r from-warning to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fa fa-gift text-white text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900">权益顾问</h3>
+                        <p class="text-sm text-gray-500">健康权益专家</p>
+                    </div>
+                    <ul class="space-y-3 text-sm text-gray-600">
+                        <li class="flex items-center">
+                            <i class="fa fa-check-circle text-warning mr-2"></i>
+                            AI辅助宣传健康权益
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa fa-check-circle text-warning mr-2"></i>
+                            营销活动推广
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa fa-check-circle text-warning mr-2"></i>
+                            积分权益管理
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa fa-check-circle text-warning mr-2"></i>
+                            专属优惠推荐
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- 专属保险顾问 -->
+                <div class="bg-white rounded-2xl p-6 shadow-lg card-hover border-t-4 border-insurance">
+                    <div class="text-center mb-6">
+                        <div class="w-20 h-20 insurance-gradient rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fa fa-shield text-white text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900">专属保险顾问</h3>
+                        <p class="text-sm text-gray-500">保险规划专家</p>
+                    </div>
+                    <ul class="space-y-3 text-sm text-gray-600">
+                        <li class="flex items-center">
+                            <i class="fa fa-check-circle text-insurance mr-2"></i>
+                            基于健康数据精准推荐
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa fa-check-circle text-insurance mr-2"></i>
+                            保险产品解读
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa fa-check-circle text-insurance mr-2"></i>
+                            保障方案定制
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa fa-check-circle text-insurance mr-2"></i>
+                            理赔服务支持
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- 角色协作流程 -->
+            <div class="mt-16 bg-white rounded-2xl p-8 shadow-lg">
+                <h3 class="text-2xl font-bold text-gray-900 mb-8 text-center">AI角色调度流程</h3>
+                <div class="relative">
+                    <!-- 流程图 -->
+                    <div class="flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0 md:space-x-4">
+                        <!-- 步骤1 -->
+                        <div class="text-center">
+                            <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-3">
+                                <i class="fa fa-user text-white text-xl"></i>
+                            </div>
+                            <h4 class="font-semibold text-gray-900 mb-2">用户咨询</h4>
+                            <p class="text-sm text-gray-600">用户发送健康问题或需求</p>
+                        </div>
+                        
+                        <!-- 箭头 -->
+                        <div class="hidden md:block">
+                            <i class="fa fa-arrow-right text-primary text-2xl"></i>
+                        </div>
+                        <div class="md:hidden">
+                            <i class="fa fa-arrow-down text-primary text-2xl"></i>
+                        </div>
+                        
+                        <!-- 步骤2 -->
+                        <div class="text-center">
+                            <div class="w-16 h-16 tech-gradient rounded-full flex items-center justify-center mx-auto mb-3">
+                                <i class="fa fa-bullseye text-white text-xl"></i>
+                            </div>
+                            <h4 class="font-semibold text-gray-900 mb-2">AI分析</h4>
+                            <p class="text-sm text-gray-600">智能识别问题类型和紧急程度</p>
+                        </div>
+                        
+                        <!-- 箭头 -->
+                        <div class="hidden md:block">
+                            <i class="fa fa-arrow-right text-primary text-2xl"></i>
+                        </div>
+                        <div class="md:hidden">
+                            <i class="fa fa-arrow-down text-primary text-2xl"></i>
+                        </div>
+                        
+                        <!-- 步骤3 -->
+                        <div class="text-center">
+                            <div class="w-16 h-16 healthcare-gradient rounded-full flex items-center justify-center mx-auto mb-3">
+                                <i class="fa fa-users text-white text-xl"></i>
+                            </div>
+                            <h4 class="font-semibold text-gray-900 mb-2">角色匹配</h4>
+                            <p class="text-sm text-gray-600">自动分配给最适合的专业角色</p>
+                        </div>
+                        
+                        <!-- 箭头 -->
+                        <div class="hidden md:block">
+                            <i class="fa fa-arrow-right text-primary text-2xl"></i>
+                        </div>
+                        <div class="md:hidden">
+                            <i class="fa fa-arrow-down text-primary text-2xl"></i>
+                        </div>
+                        
+                        <!-- 步骤4 -->
+                        <div class="text-center">
+                            <div class="w-16 h-16 success rounded-full flex items-center justify-center mx-auto mb-3">
+                                <i class="fa fa-check text-white text-xl"></i>
+                            </div>
+                            <h4 class="font-semibold text-gray-900 mb-2">专业服务</h4>
+                            <p class="text-sm text-gray-600">提供精准专业的解决方案</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 角色触发内容示例 -->
+    <section id="role-examples" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">社群角色触发内容示例</h2>
+                <p class="text-xl text-gray-600">各角色在社群中触发的具体内容和交互场景</p>
+            </div>
+            
+            <div class="space-y-12">
+                <!-- 家庭医生触发内容 -->
+                <div class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-8">
+                    <div class="flex items-center mb-6">
+                        <div class="w-16 h-16 healthcare-gradient rounded-full flex items-center justify-center mr-4">
+                            <i class="fa fa-user-md text-white text-2xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900">家庭医生触发内容</h3>
+                            <p class="text-gray-600">专业医疗建议和健康指导</p>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-white rounded-xl p-6 shadow-md">
+                            <div class="flex items-center mb-3">
+                                <i class="fa fa-stethoscope text-healthcare mr-2"></i>
+                                <h4 class="font-semibold text-gray-900">日常健康指导</h4>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4 mb-3">
+                                <p class="text-sm text-gray-700">"根据您的体检报告，您的血压偏高。建议您：1. 减少盐分摄入；2. 每周进行3-4次有氧运动；3. 保持规律作息。我会每周三为您监测血压变化。"</p>
+                            </div>
+                            <div class="flex justify-between items-center text-sm">
+                                <span class="text-gray-500">触发条件：新用户入群、定期健康评估</span>
+                                <span class="bg-healthcare text-white px-2 py-1 rounded text-xs">定期触发</span>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-xl p-6 shadow-md">
+                            <div class="flex items-center mb-3">
+                                <i class="fa fa-question-circle text-healthcare mr-2"></i>
+                                <h4 class="font-semibold text-gray-900">疾病咨询回复</h4>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4 mb-3">
+                                <p class="text-sm text-gray-700">"您描述的症状可能是季节性过敏引起的。建议您：1. 避免接触过敏原；2. 保持室内通风；3. 如症状持续，请及时就医。请注意：我提供的是健康建议，不能替代专业诊断。"</p>
+                            </div>
+                            <div class="flex justify-between items-center text-sm">
+                                <span class="text-gray-500">触发条件：用户提问、症状描述</span>
+                                <span class="bg-blue-500 text-white px-2 py-1 rounded text-xs">实时触发</span>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-xl p-6 shadow-md">
+                            <div class="flex items-center mb-3">
+                                <i class="fa fa-calendar text-healthcare mr-2"></i>
+                                <h4 class="font-semibold text-gray-900">随访提醒</h4>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4 mb-3">
+                                <p class="text-sm text-gray-700">"您好！明天是您的复诊日，请记得携带相关检查报告。如有特殊情况无法前往，请提前告知我以便重新安排。"</p>
+                            </div>
+                            <div class="flex justify-between items-center text-sm">
+                                <span class="text-gray-500">触发条件：复诊时间临近</span>
+                                <span class="bg-warning text-white px-2 py-1 rounded text-xs">提醒触发</span>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-xl p-6 shadow-md">
+                            <div class="flex items-center mb-3">
+                                <i class="fa fa-medkit text-healthcare mr-2"></i>
+                                <h4 class="font-semibold text-gray-900">用药指导</h4>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4 mb-3">
+                                <p class="text-sm text-gray-700">"您正在服用的降压药需要在早餐后服用，每天一次。请不要随意停药或调整剂量。如有不适，请及时联系我或前往医院就诊。"</p>
+                            </div>
+                            <div class="flex justify-between items-center text-sm">
+                                <span class="text-gray-500">触发条件：新药物处方、用药周期</span>
+                                <span class="bg-healthcare text-white px-2 py-1 rounded text-xs">定期触发</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 健康管家触发内容 -->
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-8">
+                    <div class="flex items-center mb-6">
+                        <div class="w-16 h-16 tech-gradient rounded-full flex items-center justify-center mr-4">
+                            <i class="fa fa-robot text-white text-2xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900">健康管家触发内容</h3>
+                            <p class="text-gray-600">AI驱动的智能健康管理和服务衔接</p>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-white rounded-xl p-6 shadow-md">
+                            <div class="flex items-center mb-3">
+                                <i class="fa fa-bullseye text-tech mr-2"></i>
+                                <h4 class="font-semibold text-gray-900">健康数据监测</h4>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4 mb-3">
+                                <p class="text-sm text-gray-700">"根据您今天上传的血压数据（145/92 mmHg），较上周有所下降，但仍偏高。建议继续坚持运动计划，我已为您预约了明天的家庭医生咨询。"</p>
+                            </div>
+                            <div class="flex justify-between items-center text-sm">
+                                <span class="text-gray-500">触发条件：数据异常、趋势变化</span>
+                                <span class="bg-tech text-white px-2 py-1 rounded text-xs">智能触发</span>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-xl p-6 shadow-md">
+                            <div class="flex items-center mb-3">
+                                <i class="fa fa-tasks text-tech mr-2"></i>
+                                <h4 class="font-semibold text-gray-900">健康计划执行</h4>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4 mb-3">
+                                <p class="text-sm text-gray-700">"今日健康任务提醒：1. 完成30分钟步行；2. 喝够8杯水；3. 记录饮食。目前您的完成率为67%，继续加油！"</p>
+                            </div>
+                            <div class="flex justify-between items-center text-sm">
+                                <span class="text-gray-500">触发条件：每日定时、任务节点</span>
+                                <span class="bg-tech text-white px-2 py-1 rounded text-xs">定时触发</span>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-xl p-6 shadow-md">
+                            <div class="flex items-center mb-3">
+                                <i class="fa fa-handshake-o text-tech mr-2"></i>
+                                <h4 class="font-semibold text-gray-900">服务衔接协调</h4>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4 mb-3">
+                                <p class="text-sm text-gray-700">"根据您的症状描述，我已为您转接至专科医生张医生，他将在10分钟内回复您。同时，我为您预约了明天的在线问诊，请注意查收确认信息。"</p>
+                            </div>
+                            <div class="flex justify-between items-center text-sm">
+                                <span class="text-gray-500">触发条件：复杂问题、专科需求</span>
+                                <span class="bg-purple-500 text-white px-2 py-1 rounded text-xs">条件触发</span>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-xl p-6 shadow-md">
+                            <div class="flex items-center mb-3">
+                                <i class="fa fa-lightbulb-o text-tech mr-2"></i>
+                                <h4 class="font-semibold text-gray-900">健康知识推送</h4>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4 mb-3">
+                                <p class="text-sm text-gray-700">"【健康小贴士】春季是呼吸道疾病高发期，建议：1. 勤洗手，保持个人卫生；2. 避免去人群密集场所；3. 加强锻炼，增强免疫力。"</p>
+                            </div>
+                            <div class="flex justify-between items-center text-sm">
+                                <span class="text-gray-500">触发条件：季节变化、健康节日</span>
+                                <span class="bg-tech text-white px-2 py-1 rounded text-xs">定期触发</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 权益顾问触发内容 -->
+                <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-2xl p-8">
+                    <div class="flex items-center mb-6">
+                        <div class="w-16 h-16 bg-gradient-to-r from-warning to-orange-500 rounded-full flex items-center justify-center mr-4">
+                            <i class="fa fa-gift text-white text-2xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900">权益顾问触发内容</h3>
+                            <p class="text-gray-600">健康权益和营销活动推广</p>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-white rounded-xl p-6 shadow-md">
+                            <div class="flex items-center mb-3">
+                                <i class="fa fa-tag text-warning mr-2"></i>
+                                <h4 class="font-semibold text-gray-900">专属权益推荐</h4>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4 mb-3">
+                                <p class="text-sm text-gray-700">"作为我们的VIP客户，您享有以下专属权益：1. 每年2次免费体检；2. 专家门诊优先预约；3. 健康管理师一对一服务。点击查看详情→"</p>
+                            </div>
+                            <div class="flex justify-between items-center text-sm">
+                                <span class="text-gray-500">触发条件：新用户入群、会员等级升级</span>
+                                <span class="bg-warning text-white px-2 py-1 rounded text-xs">条件触发</span>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-xl p-6 shadow-md">
+                            <div class="flex items-center mb-3">
+                                <i class="fa fa-calendar-check-o text-warning mr-2"></i>
+                                <h4 class="font-semibold text-gray-900">活动推广通知</h4>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4 mb-3">
+                                <p class="text-sm text-gray-700">"【限时活动】春季健康体检套餐限时8折优惠！包含：血常规、肝功能、心电图等15项检查。活动时间：3月1日-3月31日。立即预约→"</p>
+                            </div>
+                            <div class="flex justify-between items-center text-sm">
+                                <span class="text-gray-500">触发条件：活动开始、节日营销</span>
+                                <span class="bg-red-500 text-white px-2 py-1 rounded text-xs">营销触发</span>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-xl p-6 shadow-md">
+                            <div class="flex items-center mb-3">
+                                <i class="fa fa-star text-warning mr-2"></i>
+                                <h4 class="font-semibold text-gray-900">积分权益提醒</h4>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4 mb-3">
+                                <p class="text-sm text-gray-700">"您好！您当前有1500积分即将到期（3月31日），可兑换以下礼品：1. 电子血压计（1200积分）；2. 健康体检券（1000积分）。立即兑换→"</p>
+                            </div>
+                            <div class="flex justify-between items-center text-sm">
+                                <span class="text-gray-500">触发条件：积分即将到期、积分达标</span>
+                                <span class="bg-warning text-white px-2 py-1 rounded text-xs">提醒触发</span>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-xl p-6 shadow-md">
+                            <div class="flex items-center mb-3">
+                                <i class="fa fa-graduation-cap text-warning mr-2"></i>
+                                <h4 class="font-semibold text-gray-900">健康讲座邀请</h4>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4 mb-3">
+                                <p class="text-sm text-gray-700">"【健康讲座】本周四晚7点，邀请北京协和医院李教授分享《糖尿病防治新进展》。参与方式：点击链接进入直播间。前100名参与者可获得精美礼品！"</p>
+                            </div>
+                            <div class="flex justify-between items-center text-sm">
+                                <span class="text-gray-500">触发条件：专题讲座、专家分享</span>
+                                <span class="bg-warning text-white px-2 py-1 rounded text-xs">定期触发</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 专属保险顾问触发内容 -->
+                <div class="bg-gradient-to-r from-red-50 to-pink-50 rounded-2xl p-8">
+                    <div class="flex items-center mb-6">
+                        <div class="w-16 h-16 insurance-gradient rounded-full flex items-center justify-center mr-4">
+                            <i class="fa fa-shield text-white text-2xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900">专属保险顾问触发内容</h3>
+                            <p class="text-gray-600">保险产品推荐和保障方案定制</p>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-white rounded-xl p-6 shadow-md">
+                            <div class="flex items-center mb-3">
+                                <i class="fa fa-search text-insurance mr-2"></i>
+                                <h4 class="font-semibold text-gray-900">保障缺口分析</h4>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4 mb-3">
+                                <p class="text-sm text-gray-700">"根据您的健康状况和现有保单分析，您在重疾保障方面存在约30万的缺口。建议补充重疾险，推荐产品：康泰无忧重疾险。"</p>
+                            </div>
+                            <div class="flex justify-between items-center text-sm">
+                                <span class="text-gray-500">触发条件：健康评估完成、保单到期</span>
+                                <span class="bg-insurance text-white px-2 py-1 rounded text-xs">分析触发</span>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-xl p-6 shadow-md">
+                            <div class="flex items-center mb-3">
+                                <i class="fa fa-thumbs-up text-insurance mr-2"></i>
+                                <h4 class="font-semibold text-gray-900">产品推荐</h4>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4 mb-3">
+                                <p class="text-sm text-gray-700">"根据您的年龄和健康状况，为您推荐：1. 百万医疗险（年保费365元，保额600万）；2. 定期寿险（年保费1200元，保额100万）。点击查看详情→"</p>
+                            </div>
+                            <div class="flex justify-between items-center text-sm">
+                                <span class="text-gray-500">触发条件：需求分析、产品匹配</span>
+                                <span class="bg-insurance text-white px-2 py-1 rounded text-xs">推荐触发</span>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-xl p-6 shadow-md">
+                            <div class="flex items-center mb-3">
+                                <i class="fa fa-calendar text-insurance mr-2"></i>
+                                <h4 class="font-semibold text-gray-900">保单到期提醒</h4>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4 mb-3">
+                                <p class="text-sm text-gray-700">"您好！您的健康险保单将于4月15日到期。续保优势：1. 免健康告知；2. 保费优惠5%；3. 保额自动提升10%。点击续保→"</p>
+                            </div>
+                            <div class="flex justify-between items-center text-sm">
+                                <span class="text-gray-500">触发条件：保单即将到期</span>
+                                <span class="bg-insurance text-white px-2 py-1 rounded text-xs">提醒触发</span>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-xl p-6 shadow-md">
+                            <div class="flex items-center mb-3">
+                                <i class="fa fa-question-circle text-insurance mr-2"></i>
+                                <h4 class="font-semibold text-gray-900">理赔服务指导</h4>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4 mb-3">
+                                <p class="text-sm text-gray-700">"关于您的住院理赔申请，需要补充以下材料：1. 住院费用清单；2. 出院小结；3. 医保结算单。请在3个工作日内提交，我会协助您完成理赔流程。"</p>
+                            </div>
+                            <div class="flex justify-between items-center text-sm">
+                                <span class="text-gray-500">触发条件：理赔申请、材料不全</span>
+                                <span class="bg-insurance text-white px-2 py-1 rounded text-xs">服务触发</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 技术支撑 -->
+    <section id="technology" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">技术支撑体系</h2>
+                <p class="text-xl text-gray-600">基于企业微信生态，构建医疗级智能服务平台</p>
+            </div>
+            
+            <!-- 技术架构图 -->
+            <div class="bg-gradient-to-br from-gray-50 to-blue-50 rounded-2xl p-8 mb-16">
+                <h3 class="text-2xl font-bold text-gray-900 mb-8 text-center">系统技术架构</h3>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- 应用层 -->
+                    <div class="bg-white rounded-xl p-6 shadow-md">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fa fa-mobile text-white"></i>
+                            </div>
+                            <h4 class="text-lg font-bold text-gray-900">应用层</h4>
+                        </div>
+                        <ul class="space-y-2 text-sm text-gray-600">
+                            <li>• 企业微信原生功能</li>
+                            <li>• 小程序健康商城</li>
+                            <li>• 问诊工具(H5/小程序)</li>
+                            <li>• 会员权益中心</li>
+                            <li>• 营销活动页面</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- 服务层 -->
+                    <div class="bg-white rounded-xl p-6 shadow-md">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fa fa-cogs text-white"></i>
+                            </div>
+                            <h4 class="text-lg font-bold text-gray-900">服务层</h4>
+                        </div>
+                        <ul class="space-y-2 text-sm text-gray-600">
+                            <li>• 客户管理系统</li>
+                            <li>• AI分析引擎</li>
+                            <li>• 健康管理引擎</li>
+                            <li>• 角色调度系统</li>
+                            <li>• 人机协同机制</li>
+                            <li>• 数据安全服务</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- 数据层 -->
+                    <div class="bg-white rounded-xl p-6 shadow-md">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fa fa-database text-white"></i>
+                            </div>
+                            <h4 class="text-lg font-bold text-gray-900">数据层</h4>
+                        </div>
+                        <ul class="space-y-2 text-sm text-gray-600">
+                            <li>• 保司用户信息</li>
+                            <li>• 健康档案数据</li>
+                            <li>• 体检报告数据</li>
+                            <li>• 立体标签数据</li>
+                            <li>• 智能手表数据</li>
+                            <li>• AI聊天获取数据</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- AI核心能力 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+                <div class="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-2xl p-6 card-hover">
+                    <div class="w-12 h-12 tech-gradient rounded-lg flex items-center justify-center mb-4">
+                        <i class="fa fa-bullseye text-white text-lg"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-3">医疗大模型</h3>
+                    <p class="text-gray-600 text-sm">基于权威医学知识训练的大语言模型，支持症状分析、疾病预测、健康建议生成</p>
+                </div>
+                
+                <div class="bg-gradient-to-br from-green-50 to-emerald-100 rounded-2xl p-6 card-hover">
+                    <div class="w-12 h-12 healthcare-gradient rounded-lg flex items-center justify-center mb-4">
+                        <i class="fa fa-book text-white text-lg"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-3">健康知识库+AI医生协同</h3>
+                    <p class="text-gray-600 text-sm">构建权威健康知识库，结合AI医生协同工作，提升诊断准确性和服务效率</p>
+                </div>
+                
+                <div class="bg-gradient-to-br from-purple-50 to-violet-100 rounded-2xl p-6 card-hover">
+                    <div class="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fa fa-tags text-white text-lg"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-3">智能标签系统</h3>
+                    <p class="text-gray-600 text-sm">自动提取用户健康信息，生成多维度立体标签，支持精准服务推荐</p>
+                </div>
+            </div>
+            
+            <!-- 人机协同机制 -->
+            <div class="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-2xl p-8 mb-16">
+                <h3 class="text-2xl font-bold text-gray-900 mb-8 text-center">人机协同机制</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="space-y-6">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 tech-gradient rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fa fa-robot text-white text-lg"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold text-gray-900 mb-2">AI智能预处理</h4>
+                                <p class="text-gray-600 text-sm">AI负责初步问诊、症状分析、健康数据处理，为医生提供决策支持</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 healthcare-gradient rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fa fa-user-md text-white text-lg"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold text-gray-900 mb-2">医生专业诊断</h4>
+                                <p class="text-gray-600 text-sm">医生基于AI分析结果，提供专业诊断和治疗建议，确保医疗质量</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fa fa-bullseye text-white text-lg"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold text-gray-900 mb-2">智能任务分配</h4>
+                                <p class="text-gray-600 text-sm">根据问题复杂度和紧急程度，自动分配给合适的服务角色</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-orange-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fa fa-bullseye text-white text-lg"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold text-gray-900 mb-2">持续学习优化</h4>
+                                <p class="text-gray-600 text-sm">基于医生反馈不断优化AI模型，提升系统整体服务能力</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 数据安全 -->
+            <div class="bg-gradient-to-r from-red-50 to-pink-50 rounded-2xl p-8">
+                <h3 class="text-2xl font-bold text-gray-900 mb-8 text-center">数据安全与合规保障</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fa fa-lock text-white text-xl"></i>
+                        </div>
+                        <h4 class="font-semibold text-gray-900 mb-2">数据加密</h4>
+                        <p class="text-sm text-gray-600">传输加密+存储加密，确保数据安全</p>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fa fa-user-secret text-white text-xl"></i>
+                        </div>
+                        <h4 class="font-semibold text-gray-900 mb-2">隐私保护</h4>
+                        <p class="text-sm text-gray-600">严格遵循医疗数据隐私保护法规</p>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-yellow-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fa fa-shield text-white text-xl"></i>
+                        </div>
+                        <h4 class="font-semibold text-gray-900 mb-2">权限控制</h4>
+                        <p class="text-sm text-gray-600">基于角色的访问控制，分级授权</p>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fa fa-history text-white text-xl"></i>
+                        </div>
+                        <h4 class="font-semibold text-gray-900 mb-2">操作审计</h4>
+                        <p class="text-sm text-gray-600">全流程操作日志，可追溯可审计</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 落地方案 -->
+    <section id="implementation" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">落地实施路径</h2>
+                <p class="text-xl text-gray-600">从用户获取到价值转化的全流程实施方案</p>
+            </div>
+            
+            <!-- 实施步骤 -->
+            <div class="relative mb-16">
+                <!-- 时间线 -->
+                <div class="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-primary"></div>
+                
+                <div class="space-y-12">
+                    <!-- 步骤1 -->
+                    <div class="relative flex items-center">
+                        <div class="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-primary rounded-full border-4 border-white"></div>
+                        <div class="w-1/2 pr-8 text-right">
+                            <div class="bg-white rounded-xl p-6 shadow-lg card-hover">
+                                <h3 class="text-xl font-bold text-gray-900 mb-2">1. 用户加群引流</h3>
+                                <p class="text-gray-600 mb-4">通过保单交付、理赔服务、存量激活等核心场景，引导用户加入健康管理社群</p>
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                    <div class="bg-blue-50 rounded-lg p-3 text-center">
+                                        <div class="text-blue-600 font-semibold">保单交付</div>
+                                    </div>
+                                    <div class="bg-green-50 rounded-lg p-3 text-center">
+                                        <div class="text-green-600 font-semibold">理赔服务</div>
+                                    </div>
+                                    <div class="bg-orange-50 rounded-lg p-3 text-center">
+                                        <div class="text-orange-600 font-semibold">存量激活</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-1/2 pl-8"></div>
+                    </div>
+                    
+                    <!-- 步骤2 -->
+                    <div class="relative flex items-center">
+                        <div class="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-primary rounded-full border-4 border-white"></div>
+                        <div class="w-1/2 pr-8"></div>
+                        <div class="w-1/2 pl-8">
+                            <div class="bg-white rounded-xl p-6 shadow-lg card-hover">
+                                <h3 class="text-xl font-bold text-gray-900 mb-2">2. 数据信息采集</h3>
+                                <p class="text-gray-600 mb-4">通过轻量化表单、健康档案、体检报告等方式，全面收集用户健康信息</p>
+                                <ul class="space-y-2 text-sm text-gray-600">
+                                    <li class="flex items-center">
+                                        <i class="fa fa-check-circle text-success mr-2"></i>
+                                        入群后推送轻量化表单
+                                    </li>
+                                    <li class="flex items-center">
+                                        <i class="fa fa-check-circle text-success mr-2"></i>
+                                        建立个人健康档案
+                                    </li>
+                                    <li class="flex items-center">
+                                        <i class="fa fa-check-circle text-success mr-2"></i>
+                                        收集体检报告、检查单
+                                    </li>
+                                    <li class="flex items-center">
+                                        <i class="fa fa-check-circle text-success mr-2"></i>
+                                        智能手表健康数据接入
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 步骤3 -->
+                    <div class="relative flex items-center">
+                        <div class="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-primary rounded-full border-4 border-white"></div>
+                        <div class="w-1/2 pr-8 text-right">
+                            <div class="bg-white rounded-xl p-6 shadow-lg card-hover">
+                                <h3 class="text-xl font-bold text-gray-900 mb-2">3. 健康管理服务</h3>
+                                <p class="text-gray-600 mb-4">AI定制个性化健康方案，结合动态干预，实现精准健康管理</p>
+                                <div class="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-4">
+                                    <div class="text-sm font-semibold text-gray-900 mb-2">核心服务</div>
+                                    <div class="flex flex-wrap gap-2">
+                                        <span class="bg-white px-3 py-1 rounded-full text-xs text-gray-700">个性化方案生成</span>
+                                        <span class="bg-white px-3 py-1 rounded-full text-xs text-gray-700">健康监测提醒</span>
+                                        <span class="bg-white px-3 py-1 rounded-full text-xs text-gray-700">生活方式指导</span>
+                                        <span class="bg-white px-3 py-1 rounded-full text-xs text-gray-700">慢病管理</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-1/2 pl-8"></div>
+                    </div>
+                    
+                    <!-- 步骤4 -->
+                    <div class="relative flex items-center">
+                        <div class="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-primary rounded-full border-4 border-white"></div>
+                        <div class="w-1/2 pr-8"></div>
+                        <div class="w-1/2 pl-8">
+                            <div class="bg-white rounded-xl p-6 shadow-lg card-hover">
+                                <h3 class="text-xl font-bold text-gray-900 mb-2">4. 活动促销转化</h3>
+                                <p class="text-gray-600 mb-4">基于健康场景和用户画像，精准推送健康产品和服务</p>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div class="bg-yellow-50 rounded-lg p-3">
+                                        <div class="font-semibold text-yellow-800 text-sm">健康商城</div>
+                                        <div class="text-xs text-yellow-600">药械服务</div>
+                                    </div>
+                                    <div class="bg-purple-50 rounded-lg p-3">
+                                        <div class="font-semibold text-purple-800 text-sm">消费医疗</div>
+                                        <div class="text-xs text-purple-600">体检套餐</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 步骤5 -->
+                    <div class="relative flex items-center">
+                        <div class="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-primary rounded-full border-4 border-white"></div>
+                        <div class="w-1/2 pr-8 text-right">
+                            <div class="bg-white rounded-xl p-6 shadow-lg card-hover">
+                                <h3 class="text-xl font-bold text-gray-900 mb-2">5. 保险精准推荐</h3>
+                                <p class="text-gray-600 mb-4">AI分析健康档案和现有保单，生成保障缺口报告，推荐合适的保险产品</p>
+                                <div class="bg-red-50 rounded-lg p-4">
+                                    <div class="text-sm font-semibold text-gray-900 mb-2">推荐逻辑</div>
+                                    <p class="text-xs text-gray-600">"您有高血压史，推荐含心脑血管责任的重疾险"</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-1/2 pl-8"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 合规保障 -->
+    <section id="compliance" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">合规保障体系</h2>
+                <p class="text-xl text-gray-600">严格遵循医疗健康行业法规，确保服务合规安全</p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <!-- 合规要点 -->
+                <div class="space-y-6">
+                    <div class="bg-gradient-to-r from-red-50 to-pink-50 rounded-xl p-6">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-red-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fa fa-balance-scale text-white text-lg"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-gray-900 mb-2">资质合规</h3>
+                                <p class="text-gray-600 text-sm">群公告公示主体资质，包括健康管理公司营业执照、医疗服务许可证等</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gradient-to-r from-orange-50 to-yellow-50 rounded-xl p-6">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-orange-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fa fa-bullseye text-white text-lg"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-gray-900 mb-2">服务边界</h3>
+                                <p class="text-gray-600 text-sm">社群内仅提供健康咨询，开方问诊需引导用户点击链接到线上互联网医院</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fa fa-shield text-white text-lg"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-gray-900 mb-2">数据保护</h3>
+                                <p class="text-gray-600 text-sm">严格遵循《个人信息保护法》《数据安全法》等相关法规，保护用户隐私</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-6">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i class="fa fa-history text-white text-lg"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-gray-900 mb-2">记录留存</h3>
+                                <p class="text-gray-600 text-sm">完整留存服务记录，确保服务过程可追溯、可审计</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 合规流程 -->
+                <div class="bg-gradient-to-br from-gray-50 to-blue-50 rounded-2xl p-8">
+                    <h3 class="text-xl font-bold text-gray-900 mb-6">合规服务流程</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-3 p-4 bg-white rounded-lg shadow-sm">
+                            <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-bold text-sm">1</div>
+                            <div class="flex-1">
+                                <div class="font-semibold text-gray-900">用户咨询</div>
+                                <div class="text-sm text-gray-600">健康问题咨询</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-center">
+                            <i class="fa fa-arrow-down text-primary"></i>
+                        </div>
+                        
+                        <div class="flex items-center space-x-3 p-4 bg-white rounded-lg shadow-sm">
+                            <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-bold text-sm">2</div>
+                            <div class="flex-1">
+                                <div class="font-semibold text-gray-900">AI初步分析</div>
+                                <div class="text-sm text-gray-600">判断问题类型和紧急程度</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-center">
+                            <i class="fa fa-arrow-down text-primary"></i>
+                        </div>
+                        
+                        <div class="flex items-center space-x-3 p-4 bg-white rounded-lg shadow-sm">
+                            <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-bold text-sm">3</div>
+                            <div class="flex-1">
+                                <div class="font-semibold text-gray-900">专业回复</div>
+                                <div class="text-sm text-gray-600">提供健康建议，明确服务边界</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-center">
+                            <i class="fa fa-arrow-down text-primary"></i>
+                        </div>
+                        
+                        <div class="flex items-center space-x-3 p-4 bg-white rounded-lg shadow-sm">
+                            <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-bold text-sm">4</div>
+                            <div class="flex-1">
+                                <div class="font-semibold text-gray-900">就医引导</div>
+                                <div class="text-sm text-gray-600">如需诊疗，引导至合规医疗机构</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-center">
+                            <i class="fa fa-arrow-down text-primary"></i>
+                        </div>
+                        
+                        <div class="flex items-center space-x-3 p-4 bg-white rounded-lg shadow-sm">
+                            <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-bold text-sm">5</div>
+                            <div class="flex-1">
+                                <div class="font-semibold text-gray-900">记录归档</div>
+                                <div class="text-sm text-gray-600">完整记录服务过程，归档保存</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- 公司信息 -->
+                <div class="md:col-span-2">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-10 h-10 healthcare-gradient rounded-lg flex items-center justify-center">
+                            <i class="fa fa-heartbeat text-white text-lg"></i>
+                        </div>
+                        <span class="text-xl font-bold">企微健康社群方案</span>
+                    </div>
+                    <p class="text-gray-400 mb-4 max-w-md">
+                        专业的企微健康社群方案提供商，致力于通过技术创新推动医疗健康服务数字化转型。
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-primary transition-colors duration-300">
+                            <i class="fa fa-wechat"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-primary transition-colors duration-300">
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-primary transition-colors duration-300">
+                            <i class="fa fa-linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 快速链接 -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">快速链接</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#overview" class="hover:text-white transition-colors duration-300">方案概览</a></li>
+                        <li><a href="#roles" class="hover:text-white transition-colors duration-300">角色配置</a></li>
+                        <li><a href="#role-examples" class="hover:text-white transition-colors duration-300">角色触发示例</a></li>
+                        <li><a href="#technology" class="hover:text-white transition-colors duration-300">技术支撑</a></li>
+                        <li><a href="#implementation" class="hover:text-white transition-colors duration-300">落地方案</a></li>
+                        <li><a href="#compliance" class="hover:text-white transition-colors duration-300">合规保障</a></li>
+                    </ul>
+                </div>
+                
+                <!-- 联系信息 -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">联系我们</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li class="flex items-center">
+                            <i class="fa fa-phone mr-2"></i>
+                            400-888-9999
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa fa-envelope mr-2"></i>
+                            healthcare@bbc-solution.com
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa fa-map-marker mr-2"></i>
+                            北京市朝阳区建国门外大街
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 企微健康社群方案. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 返回顶部按钮 -->
+    <button id="back-to-top" class="fixed bottom-8 right-8 w-12 h-12 primary rounded-full flex items-center justify-center text-white shadow-lg opacity-0 transition-all duration-300 hover:bg-blue-700">
+        <i class="fa fa-chevron-up"></i>
+    </button>
+
+    <script>
+        // 导航栏滚动效果
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            const backToTop = document.getElementById('back-to-top');
+            
+            if (window.scrollY > 100) {
+                navbar.classList.add('bg-white', 'shadow-lg');
+                backToTop.style.opacity = '1';
+            } else {
+                navbar.classList.remove('bg-white', 'shadow-lg');
+                backToTop.style.opacity = '0';
+            }
+        });
+
+        // 移动端菜单切换
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        }
+
+        // 平滑滚动到指定区域
+        function scrollToSection(sectionId) {
+            const element = document.getElementById(sectionId);
+            if (element) {
+                element.scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        }
+
+        // 返回顶部
+        document.getElementById('back-to-top').addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // 导航链接点击事件
+        document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                scrollToSection(targetId);
+                
+                // 关闭移动端菜单
+                document.getElementById('mobile-menu').classList.add('hidden');
+            });
+        });
+
+        // 表单提交处理
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // 显示提交成功消息
+                const button = this.querySelector('button[type="submit"]');
+                const originalText = button.innerHTML;
+                
+                button.innerHTML = '<i class="fa fa-spinner fa-spin mr-2"></i>提交中...';
+                button.disabled = true;
+                
+                setTimeout(() => {
+                    button.innerHTML = '<i class="fa fa-check mr-2"></i>提交成功';
+                    button.classList.remove('bg-primary', 'hover:bg-blue-700');
+                    button.classList.add('bg-success');
+                    
+                    setTimeout(() => {
+                        button.innerHTML = originalText;
+                        button.disabled = false;
+                        button.classList.add('bg-primary', 'hover:bg-blue-700');
+                        button.classList.remove('bg-success');
+                        this.reset();
+                    }, 2000);
+                }, 1500);
+            });
+        });
+
+        // 滚动动画观察器
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-slide-up');
+                }
+            });
+        }, observerOptions);
+
+        // 观察所有需要动画的元素
+        document.querySelectorAll('.card-hover, .bg-white').forEach(el => {
+            observer.observe(el);
+        });
+
+        // 数字计数动画
+        function animateNumbers() {
+            const numbers = document.querySelectorAll('[data-animate-number]');
+            
+            numbers.forEach(number => {
+                const target = parseInt(number.getAttribute('data-animate-number'));
+                const duration = 2000;
+                const start = 0;
+                const increment = target / (duration / 16);
+                let current = start;
+                
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    number.textContent = Math.floor(current) + (number.textContent.includes('%') ? '%' : '+');
+                }, 16);
+            });
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 延迟启动数字动画
+            setTimeout(animateNumbers, 1000);
+            
+            // 确保所有元素都没有焦点边框
+            document.addEventListener('focus', function(e) {
+                e.target.style.outline = 'none';
+                e.target.style.boxShadow = 'none';
+            }, true);
+            
+            document.addEventListener('blur', function(e) {
+                e.target.style.outline = 'none';
+                e.target.style.boxShadow = 'none';
+            }, true);
+        });
+    </script>
+</body>
+</html>
