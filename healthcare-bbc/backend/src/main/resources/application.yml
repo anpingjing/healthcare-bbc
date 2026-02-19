@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: ${PORT:8080}
 
 spring:
   application:
@@ -18,16 +18,16 @@ spring:
       mode: always
 
 jwt:
-  secret: healthcare-bbc-secret-key-for-jwt-token-generation-2026
+  secret: ${JWT_SECRET:healthcare-bbc-secret-key-for-jwt-token-generation-2026}
   expiration: 86400000
 
 wechat:
   work:
-    corp-id: wwace533e386c63f72
-    corp-secret: x-3ikL_1L8FpaqgMTGYmVWwcFACTwmV8gW-h7hLqIoM
-    agent-id: 1000007
-    token: IlXP1Nd8pFlHfcl
-    encoding-aes-key: Tr2NfsFeAjsyKMP5e5u7HqoyNMYWeP4wyXTO5G4t0Ir
+    corp-id: ${WECHAT_CORP_ID:wwace533e386c63f72}
+    corp-secret: ${WECHAT_CORP_SECRET:x-3ikL_1L8FpaqgMTGYmVWwcFACTwmV8gW-h7hLqIoM}
+    agent-id: ${WECHAT_AGENT_ID:1000007}
+    token: ${WECHAT_TOKEN:IlXP1Nd8pFlHfcl}
+    encoding-aes-key: ${WECHAT_ENCODING_AES_KEY:Tr2NfsFeAjsyKMP5e5u7HqoyNMYWeP4wyXTO5G4t0Ir}
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
