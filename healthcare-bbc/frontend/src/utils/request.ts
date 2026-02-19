@@ -1,8 +1,14 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 import { ElMessage } from 'element-plus'
 
+const envApiBaseUrl = (import.meta.env.VITE_API_BASE_URL as string | undefined) || ''
+const normalizedApiBaseUrl = envApiBaseUrl.replace(/\/+$/, '')
+const baseURL = normalizedApiBaseUrl
+  ? (normalizedApiBaseUrl.endsWith('/api/v1') ? normalizedApiBaseUrl : `${normalizedApiBaseUrl}/api/v1`)
+  : '/api/v1'
+
 const service: AxiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || '/api/v1',
+  baseURL,
   timeout: 10000
 })
 

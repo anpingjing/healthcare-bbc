@@ -24,10 +24,10 @@ jwt:
 wechat:
   work:
     corp-id: ${WECHAT_CORP_ID:wwace533e386c63f72}
-    corp-secret: ${WECHAT_CORP_SECRET:x-3ikL_1L8FpaqgMTGYmVWwcFACTwmV8gW-h7hLqIoM}
+    corp-secret: ${WECHAT_CORP_SECRET:}
     agent-id: ${WECHAT_AGENT_ID:1000007}
-    token: ${WECHAT_TOKEN:IlXP1Nd8pFlHfcl}
-    encoding-aes-key: ${WECHAT_ENCODING_AES_KEY:Tr2NfsFeAjsyKMP5e5u7HqoyNMYWeP4wyXTO5G4t0Ir}
+    token: ${WECHAT_TOKEN:}
+    encoding-aes-key: ${WECHAT_ENCODING_AES_KEY:}
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
@@ -36,3 +36,9 @@ mybatis:
 logging:
   level:
     com.healthcare.bbc: DEBUG
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
