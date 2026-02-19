@@ -55,5 +55,9 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=60s --retries=3 \
 ENV SPRING_PROFILES_ACTIVE=prod
 ENV SERVER_PORT=8080
 
+# Copy startup script
+COPY deploy/start.sh /start.sh
+RUN chmod +x /start.sh
+
 # Start the application
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["/start.sh"]
