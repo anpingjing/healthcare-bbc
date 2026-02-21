@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @Schema(description = "角色DTO")
 public class RoleDTO {
@@ -35,4 +37,7 @@ public class RoleDTO {
 
     @Schema(description = "状态: 0-禁用 1-启用")
     private Integer status;
+
+    @Schema(description = "权限ID列表")
+    private List<Long> permissionIds;
 }

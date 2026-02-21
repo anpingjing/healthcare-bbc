@@ -1,0 +1,28 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:healthcare_bbc;DB_CLOSE_DELAY=-1;MODE=MySQL
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  sql:
+    init:
+      mode: always
+
+jwt:
+  secret: ${JWT_SECRET:dev-healthcare-bbc-jwt-secret}
+  expiration: 86400000
+
+encryption:
+  key: ${ENCRYPTION_KEY:0123456789abcdef0123456789abcdef}
+
+wechat:
+  work:
+    corp-id: ${WECHAT_CORP_ID:}
+    corp-secret: ${WECHAT_CORP_SECRET:}
+    agent-id: ${WECHAT_AGENT_ID:}
+    token: ${WECHAT_TOKEN:}
+    encoding-aes-key: ${WECHAT_ENCODING_AES_KEY:}

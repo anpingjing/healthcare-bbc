@@ -13,12 +13,23 @@
         class="login-form"
         @keyup.enter="handleLogin"
       >
-        <el-form-item prop="wechatId">
+        <el-form-item prop="username">
           <el-input
-            v-model="loginForm.wechatId"
-            placeholder="企业微信ID"
+            v-model="loginForm.username"
+            placeholder="用户名"
             size="large"
             :prefix-icon="User"
+          />
+        </el-form-item>
+
+        <el-form-item prop="password">
+          <el-input
+            v-model="loginForm.password"
+            type="password"
+            placeholder="密码"
+            size="large"
+            :prefix-icon="Lock"
+            show-password
           />
         </el-form-item>
 
@@ -36,7 +47,7 @@
       </el-form>
 
       <div class="login-footer">
-        <p>请输入企业微信ID登录</p>
+        <p>默认账号: admin / 123456</p>
       </div>
     </div>
   </div>
@@ -46,7 +57,7 @@
 import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
-import { User } from '@element-plus/icons-vue'
+import { User, Lock } from '@element-plus/icons-vue'
 import { useUserStore } from '@/store/user'
 import type { FormInstance, FormRules } from 'element-plus'
 
@@ -56,12 +67,16 @@ const loginFormRef = ref<FormInstance>()
 const loading = ref(false)
 
 const loginForm = reactive({
-  wechatId: ''
+  username: '',
+  password: ''
 })
 
 const loginRules: FormRules = {
-  wechatId: [
-    { required: true, message: '请输入企业微信ID', trigger: 'blur' }
+  username: [
+    { required: true, message: '请输入用户名', trigger: 'blur' }
+  ],
+  password: [
+    { required: true, message: '请输入密码', trigger: 'blur' }
   ]
 }
 

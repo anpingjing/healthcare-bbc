@@ -6,15 +6,15 @@
 
 您提供的 Supabase 信息如下：
 
-- **URL**: `https://texbpopnfrjnkopnqjzd.supabase.co`
-- **Anon Key**: `sb_publishable_yEH6dL1n7hFcIkc3PaT_Zg_Vkh2Y7yb`
-- **PostgreSQL 连接串**: `postgresql://postgres:[YOUR-PASSWORD]@db.texbpopnfrjnkopnqjzd.supabase.co:5432/postgres`
+- **URL**: `https://<your-project-ref>.supabase.co`
+- **Anon Key**: `<your-anon-key>`
+- **PostgreSQL 连接串**: `postgresql://postgres:<YOUR-PASSWORD>@db.<your-project-ref>.supabase.co:5432/postgres`
 
 ## 2. 初始化数据库结构
 
 由于 Supabase 使用 PostgreSQL，而本项目默认使用 MySQL，您需要手动初始化数据库表结构。
 
-1. 登录 [Supabase Dashboard](https://supabase.com/dashboard/project/texbpopnfrjnkopnqjzd/editor/sql)。
+1. 登录 Supabase Dashboard 并进入项目。
 2. 进入 **SQL Editor**。
 3. 点击 **New Query**。
 4. 复制 `deploy/sql/supabase-schema.sql` 文件的内容并粘贴到编辑器中。
@@ -26,7 +26,7 @@
 
 ```bash
 # 数据库连接 (注意替换 [YOUR-PASSWORD])
-SPRING_DATASOURCE_URL=jdbc:postgresql://db.texbpopnfrjnkopnqjzd.supabase.co:5432/postgres?sslmode=require
+SPRING_DATASOURCE_URL=jdbc:postgresql://db.<your-project-ref>.supabase.co:5432/postgres?sslmode=require
 SPRING_DATASOURCE_USERNAME=postgres
 SPRING_DATASOURCE_PASSWORD=[YOUR-PASSWORD]
 SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
@@ -46,8 +46,8 @@ WECHAT_CORP_ID=...
 如果前端需要直接访问 Supabase（例如使用 Supabase Auth 或 Storage），请在前端 `.env` 中添加：
 
 ```bash
-VITE_SUPABASE_URL=https://texbpopnfrjnkopnqjzd.supabase.co
-VITE_SUPABASE_ANON_KEY=sb_publishable_yEH6dL1n7hFcIkc3PaT_Zg_Vkh2Y7yb
+VITE_SUPABASE_URL=https://<your-project-ref>.supabase.co
+VITE_SUPABASE_ANON_KEY=<your-anon-key>
 ```
 
 *注意：目前后端代码主要依赖 Spring Boot + MyBatis Plus，尚未集成 Supabase 客户端 SDK。以上前端配置仅供将来扩展使用。*

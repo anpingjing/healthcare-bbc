@@ -4,30 +4,23 @@ server:
 spring:
   application:
     name: healthcare-bbc
-  datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:h2:mem:healthcare_bbc;DB_CLOSE_DELAY=-1;MODE=MySQL}
-    username: ${SPRING_DATASOURCE_USERNAME:sa}
-    password: ${SPRING_DATASOURCE_PASSWORD:}
-    driver-class-name: ${SPRING_DATASOURCE_DRIVER_CLASS_NAME:org.h2.Driver}
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
-  sql:
-    init:
-      mode: always
 
 jwt:
-  secret: ${JWT_SECRET:healthcare-bbc-secret-key-for-jwt-token-generation-2026}
+  secret: ${JWT_SECRET}
   expiration: 86400000
 
 wechat:
   work:
-    corp-id: ${WECHAT_CORP_ID:wwace533e386c63f72}
+    corp-id: ${WECHAT_CORP_ID:}
     corp-secret: ${WECHAT_CORP_SECRET:}
-    agent-id: ${WECHAT_AGENT_ID:1000007}
+    agent-id: ${WECHAT_AGENT_ID:}
     token: ${WECHAT_TOKEN:}
     encoding-aes-key: ${WECHAT_ENCODING_AES_KEY:}
+
+encryption:
+  key: ${ENCRYPTION_KEY}
+  previous-key: ${ENCRYPTION_PREVIOUS_KEY:}
+  legacy-key: ${ENCRYPTION_LEGACY_KEY:}
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml

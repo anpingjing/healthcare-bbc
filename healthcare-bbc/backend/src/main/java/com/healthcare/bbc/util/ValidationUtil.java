@@ -4,8 +4,9 @@ import java.util.regex.Pattern;
 
 public class ValidationUtil {
     private static final Pattern PHONE_PATTERN = Pattern.compile("^1[3-9]\\d{9}$");
-    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$");
-    private static final Pattern ID_CARD_PATTERN = Pattern.compile("^[1-9]\\d{5}(18|19|20)\\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\\d|3[01])\\d{3}[\\dXx]$");
+    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)+$");
+    private static final Pattern ID_CARD_18_PATTERN = Pattern.compile("^[1-9]\\d{5}(18|19|20)\\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\\d|3[01])\\d{3}[\\dXx]$");
+    private static final Pattern ID_CARD_15_PATTERN = Pattern.compile("^[1-9]\\d{5}\\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\\d|3[01])\\d{3}$");
 
     public static boolean isValidPhone(String phone) {
         return phone != null && PHONE_PATTERN.matcher(phone).matches();
@@ -16,7 +17,7 @@ public class ValidationUtil {
     }
 
     public static boolean isValidIdCard(String idCard) {
-        return idCard != null && ID_CARD_PATTERN.matcher(idCard).matches();
+        return idCard != null && (ID_CARD_18_PATTERN.matcher(idCard).matches() || ID_CARD_15_PATTERN.matcher(idCard).matches());
     }
 
     public static boolean isEmpty(String str) {

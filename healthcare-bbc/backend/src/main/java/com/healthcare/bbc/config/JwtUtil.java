@@ -15,7 +15,7 @@ import java.util.Map;
 
 @Component
 public class JwtUtil {
-    @Value("${jwt.secret:healthcare-bbc-secret-key-for-jwt-token-generation}")
+    @Value("${jwt.secret}")
     private String secret;
 
     @Value("${jwt.expiration:86400000}")

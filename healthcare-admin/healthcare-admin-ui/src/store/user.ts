@@ -10,8 +10,10 @@ export const useUserStore = defineStore('user', () => {
 
   // Getters
   const isLoggedIn = computed(() => !!token.value)
-  const username = computed(() => userInfo.value?.name || '')
-  const userId = computed(() => userInfo.value?.userId || 0)
+  const username = computed(() => userInfo.value?.user?.username || '')
+  const userId = computed(() => userInfo.value?.user?.userId || 0)
+  const realName = computed(() => userInfo.value?.user?.realName || '')
+  const avatar = computed(() => userInfo.value?.user?.avatar || '')
 
   // Actions
   const setToken = (accessToken: string) => {
@@ -29,7 +31,7 @@ export const useUserStore = defineStore('user', () => {
     const res = await login(loginForm)
     if (res.code === 200) {
       const data = res.data
-      setToken(data.token)
+      setToken(data.accessToken)
       userInfo.value = data
       return true
     }
@@ -50,6 +52,8 @@ export const useUserStore = defineStore('user', () => {
     isLoggedIn,
     username,
     userId,
+    realName,
+    avatar,
     setToken,
     clearToken,
     loginAction,

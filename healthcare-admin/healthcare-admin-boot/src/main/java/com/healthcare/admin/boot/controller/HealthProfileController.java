@@ -77,7 +77,7 @@ public class HealthProfileController {
             @Parameter(description = "档案ID") @PathVariable Long profileId) {
         log.info("删除健康档案: profileId={}", profileId);
         healthProfileService.deleteProfile(profileId);
-        return Result.success("删除成功");
+        return Result.<Void>success("删除成功", null);
     }
 
     @PostMapping("/{profileId}/calculate-score")
@@ -99,7 +99,7 @@ public class HealthProfileController {
         log.info("分配服务角色: profileId={}", profileId);
         healthProfileService.assignServiceRoles(profileId, doctorId, healthManagerId, 
                 benefitAdvisorId, insuranceAdvisorId);
-        return Result.success("分配成功");
+        return Result.<Void>success("分配成功", null);
     }
 
     @GetMapping("/statistics")

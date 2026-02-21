@@ -36,3 +36,17 @@ docker-compose.override.yml
 
 # Other
 Thumbs.db
+*.pem
+*.key
+*.crt
+id_rsa
+id_rsa.pub
+.vercel/
+deploy/*.zip
+*.zip
+*.7z
+*.rar
+temp*/
+temp-*/
+healthcare-deploy-package-*/
+healthcare-*-source*.zip

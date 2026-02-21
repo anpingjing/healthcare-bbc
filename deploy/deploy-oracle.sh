@@ -58,8 +58,13 @@ chmod +x $DOCKER_CONFIG/cli-plugins/docker-compose
 
 # 安装 MySQL
 log_info "安装 MySQL..."
-debconf-set-selections <<< "mysql-server mysql-server/root_password password RootP@ssw0rd123!"
-debconf-set-selections <<< "mysql-server mysql-server/root_password_again password RootP@ssw0rd123!"
+MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-CHANGE_ME_ROOT_PASSWORD}
+MYSQL_USER=${MYSQL_USER:-healthcare}
+MYSQL_PASSWORD=${MYSQL_PASSWORD:-CHANGE_ME_DB_PASSWORD}
+REDIS_PASSWORD=${REDIS_PASSWORD:-CHANGE_ME_REDIS_PASSWORD}
+
+debconf-set-selections <<< "mysql-server mysql-server/root_password password ${MYSQL_ROOT_PASSWORD}"
+debconf-set-selections <<< "mysql-server mysql-server/root_password_again password ${MYSQL_ROOT_PASSWORD}"
 apt install -y mysql-server
 systemctl enable mysql
 systemctl start mysql
@@ -95,10 +100,10 @@ ufw allow 6379/tcp
 
 # 创建 MySQL 数据库
 log_info "创建数据库..."
-mysql -u root -pRootP@ssw0rd123! <<EOF
+mysql -u root -p"${MYSQL_ROOT_PASSWORD}" <<EOF
 CREATE DATABASE IF NOT EXISTS healthcare_admin DEFAULT CHARACTER SET utf8mb4;
-CREATE USER IF NOT EXISTS 'healthcare'@'localhost' IDENTIFIED BY 'HealthP@ss123!';
-GRANT ALL PRIVILEGES ON healthcare_admin.* TO 'healthcare'@'localhost';
+CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'localhost' IDENTIFIED BY '${MYSQL_PASSWORD}';
+GRANT ALL PRIVILEGES ON healthcare_admin.* TO '${MYSQL_USER}'@'localhost';
 FLUSH PRIVILEGES;
 EOF
 
@@ -112,16 +117,17 @@ log_info "创建部署配置文件..."
 
 # 创建环境变量文件
 cat > /opt/healthcare/.env <<EOF
-MYSQL_ROOT_PASSWORD=RootP@ssw0rd123!
-MYSQL_USER=healthcare
-MYSQL_PASSWORD=HealthP@ss123!
-REDIS_PASSWORD=RedisP@ss123!
-JWT_SECRET=change-this-to-a-random-secret-in-production
-WECHAT_CORP_ID=wwace533e386c63f72
-WECHAT_CORP_SECRET=your-corp-secret
-WECHAT_AGENT_ID=1000007
-WECHAT_TOKEN=your-token
-WECHAT_ENCODING_AES_KEY=your-aes-key
+MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+MYSQL_USER=${MYSQL_USER}
+MYSQL_PASSWORD=${MYSQL_PASSWORD}
+REDIS_PASSWORD=${REDIS_PASSWORD}
+JWT_SECRET=CHANGE_ME_RANDOM_JWT_SECRET
+ENCRYPTION_KEY=CHANGE_ME_16_24_32_BYTES
+WECHAT_CORP_ID=
+WECHAT_CORP_SECRET=
+WECHAT_AGENT_ID=
+WECHAT_TOKEN=
+WECHAT_ENCODING_AES_KEY=
 EOF
 
 # 设置权限
@@ -139,5 +145,5 @@ echo "🔐 默认数据库信息："
 echo "   Host: localhost"
 echo "   Port: 3306"
 echo "   Database: healthcare_admin"
-echo "   User: healthcare"
-echo "   Password: HealthP@ss123!"
+echo "   User: ${MYSQL_USER}"
+echo "   Password: (已在 .env 中配置)"

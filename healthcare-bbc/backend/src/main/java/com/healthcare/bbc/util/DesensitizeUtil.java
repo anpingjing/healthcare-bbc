@@ -14,15 +14,19 @@ public class DesensitizeUtil {
         }
         int atIndex = email.indexOf("@");
         String prefix = email.substring(0, atIndex);
-        if (prefix.length() <= 2) {
+        if (prefix.isEmpty()) {
             return email;
         }
-        return prefix.substring(0, 2) + "***" + email.substring(atIndex);
+        int keep = prefix.length() <= 2 ? 1 : 2;
+        return prefix.substring(0, keep) + "***" + email.substring(atIndex);
     }
 
     public static String desensitizeIdCard(String idCard) {
         if (idCard == null || (idCard.length() != 15 && idCard.length() != 18)) {
             return idCard;
+        }
+        if (idCard.length() == 15) {
+            return idCard.substring(0, 6) + "********" + "0" + idCard.substring(12);
         }
         return idCard.substring(0, 6) + "********" + idCard.substring(idCard.length() - 4);
     }
@@ -38,8 +42,11 @@ public class DesensitizeUtil {
     }
 
     public static String desensitizeBankCard(String bankCard) {
-        if (bankCard == null || bankCard.length() < 10) {
+        if (bankCard == null || bankCard.length() <= 10) {
             return bankCard;
+        }
+        if (bankCard.length() == 19) {
+            return bankCard.substring(0, 4) + "****" + bankCard.substring(8, 12);
         }
         return bankCard.substring(0, 4) + "********" + bankCard.substring(bankCard.length() - 4);
     }
@@ -48,6 +55,11 @@ public class DesensitizeUtil {
         if (address == null || address.length() < 10) {
             return address;
         }
-        return address.substring(0, 6) + "******";
+        int idx = address.indexOf("区");
+        int keep = idx >= 0 ? idx + 1 : 6;
+        if (keep > address.length()) {
+            keep = address.length();
+        }
+        return address.substring(0, keep) + "******";
     }
 }

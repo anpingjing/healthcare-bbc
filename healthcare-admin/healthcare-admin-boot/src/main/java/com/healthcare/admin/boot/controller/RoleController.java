@@ -66,7 +66,7 @@ public class RoleController {
             @Parameter(description = "角色ID") @PathVariable Long roleId) {
         log.info("删除角色: {}", roleId);
         roleService.deleteRole(roleId);
-        return Result.success("删除成功");
+        return Result.<Void>success("删除成功", null);
     }
 
     @GetMapping("/{roleId}/permissions")
@@ -84,6 +84,6 @@ public class RoleController {
             @RequestBody List<Long> permissionIds) {
         log.info("配置角色权限: roleId={}, permissionCount={}", roleId, permissionIds != null ? permissionIds.size() : 0);
         roleService.assignPermissions(roleId, permissionIds);
-        return Result.success("权限配置成功");
+        return Result.<Void>success("权限配置成功", null);
     }
 }

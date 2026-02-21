@@ -20,14 +20,23 @@ export interface PageResponse<T = any> {
 
 // 登录相关类型
 export interface LoginForm {
-  wechatId: string
+  username: string
+  password: string
 }
 
 export interface LoginResult {
-  token: string
-  userId: number
-  wechatId: string
-  name: string
+  accessToken: string
+  refreshToken: string
+  expiresIn: number
+  tokenType: string
+  user: {
+    userId: number
+    username: string
+    realName: string
+    avatar: string
+    roles: string[]
+    permissions: string[]
+  }
 }
 
 // 用户类型

@@ -1,0 +1,11 @@
+{
+  "name": "healthcare-monorepo",
+  "private": true,
+  "engines": {
+    "node": ">=18 <23"
+  },
+  "scripts": {
+    "build": "npm --prefix healthcare-bbc/frontend ci && npm --prefix healthcare-bbc/frontend run build",
+    "dev": "npm --prefix healthcare-bbc/frontend run dev"
+  }
+}

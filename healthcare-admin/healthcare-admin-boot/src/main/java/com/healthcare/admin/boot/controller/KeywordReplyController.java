@@ -66,7 +66,7 @@ public class KeywordReplyController {
             @Parameter(description = "回复ID") @PathVariable Long replyId) {
         log.info("删除关键词回复: replyId={}", replyId);
         keywordReplyService.deleteReply(replyId);
-        return Result.success("删除成功");
+        return Result.<Void>success("删除成功", null);
     }
 
     @PutMapping("/status")
@@ -76,6 +76,6 @@ public class KeywordReplyController {
             @Parameter(description = "状态") @RequestParam Integer status) {
         log.info("批量更新关键词回复状态: count={}, status={}", replyIds.size(), status);
         keywordReplyService.updateStatus(replyIds, status);
-        return Result.success("状态更新成功");
+        return Result.<Void>success("状态更新成功", null);
     }
 }
