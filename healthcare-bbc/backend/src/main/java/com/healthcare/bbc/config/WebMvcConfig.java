@@ -13,7 +13,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     private final JwtUtil jwtUtil;
 
-    @Value("${APP_CORS_ALLOWED_ORIGIN_PATTERNS:http://localhost:5173,http://localhost:3000}")
+    @Value("${APP_CORS_ALLOWED_ORIGIN_PATTERNS:http://localhost:5173,http://localhost:3000,https://*.vercel.app}")
     private String allowedOriginPatterns;
 
     public WebMvcConfig(JwtUtil jwtUtil) {
